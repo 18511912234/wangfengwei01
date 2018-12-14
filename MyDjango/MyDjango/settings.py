@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',#支持中文语言
 
     'django.middleware.common.CommonMiddleware',#处理请求信息
-    'django.middleware.csrf.CsrfViewMiddleware',#开启CSRF防护
+    #'django.middleware.csrf.CsrfViewMiddleware',#开启CSRF防护
     'django.contrib.auth.middleware.AuthenticationMiddleware',#开启内置用户认证系统
     'django.contrib.messages.middleware.MessageMiddleware',#开启内置信息提示功能
     'django.middleware.clickjacking.XFrameOptionsMiddleware',#防止恶意程序点击劫持2
@@ -95,22 +95,23 @@ DATABASES = {
     #第一个数据库
     'default': {
         #mysql数据库，python3不支持mysqldb，支持mysqlclient
+        'OPTIONS':{'isolation_level':None},
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'django_db',
+        'NAME':'wfw_test',
         'USER':'root',
         'PASSWORD':'123456',
         'HOST':'127.0.0.1',
         'PORT':'3306',
     },
-    #第二个数据库
-    'MyDjango':{
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME':'MyDjango_db',
-        'USER':'root',
-        'PASSWORD':'123456',
-        'HOST':'127.0.0.1',
-        'PORT':'3306',
-    },
+    #第二个数据库,多个库不同的表怎么使用
+    # 'MyDjango':{
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME':'MyDjango_db',
+    #     'USER':'root',
+    #     'PASSWORD':'123456',
+    #     'HOST':'127.0.0.1',
+    #     'PORT':'3306',
+    # },
 }
 
 

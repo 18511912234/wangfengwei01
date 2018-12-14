@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+    <ul id="cate_box" class="1f">
+        {% for type in type_list %}
+            <li>
+            <h3><a href="#">{{ type.type }}</a></h3>
+            <p>
+                {% for name in name_list %}
+                    {% if name.type == type.type %}
+                        <span>{name.name}</span>
+                    {% endif %}
+                    {% endfor %}
+            </p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
