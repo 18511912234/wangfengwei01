@@ -18,8 +18,6 @@ from django.urls import path,include#导入url编写模块
 
 #这是一个集合，不能重复，每个元素代表一条url信息
 urlpatterns = [
-    path('admin/', admin.site.urls), #admin/ 代表127.0.0.1:8000/ admin.site.urls代表url的处理函数也就是司徒函数
-    #配置
-   # path('',include('index.urls')),#r'^'代表 127.0.0.1:8000  include('index.urls')代表把这个url分发给index应用下的urls.py处理
-    #path('',include('user.urls'))
+    path('admin/', admin.site.urls),
+    path('user/',include('user.urls'))
 ]

@@ -71,7 +71,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         #设置模板所在的路径,这里存的是列表，可以配置多个模板路径
-        'DIRS': [os.path.join(BASE_DIR, 'templates'),os.path.join(BASE_DIR,'index/templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),os.path.join(BASE_DIR,'index/templates/admin/index')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -101,6 +101,7 @@ DATABASES = {
         'USER':'root',
         'PASSWORD':'123456',
         'HOST':'127.0.0.1',
+        #'HOST':'10.7.0.113',
         'PORT':'3306',
     },
     #第二个数据库,多个库不同的表怎么使用
@@ -170,3 +171,18 @@ STATIC_URL = '/static/'
 '''
 #路径拼接
 STATICFILES_DIRS=[os.path.join(BASE_DIR,'public_static'),os.path.join(BASE_DIR,'index/static')]
+
+
+
+#配置邮箱
+EMALL_USE_SSL=True
+#邮件服务器(这个是163邮箱的)
+EMAIL_HOST='stmp.163.com'
+#邮件服务器端口
+EMAIL_PORT=465
+#发送邮件的账号
+EMAIL_HOST_USER='w18511912234@163.com'
+#SMTP授权码 不是邮箱密码
+EMAIL_HOST_PASSWORD='wangfengwei1'
+#设置默认发送邮件的邮箱
+DEFAULT_FROM_EMAIL=EMAIL_HOST_USER

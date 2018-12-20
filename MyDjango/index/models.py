@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.html import format_html
 # Create your models here.
 
 # class Product(models.Model):
@@ -29,9 +29,53 @@ class Program(models.Model):
     name=models.CharField(max_length=20)
 
 class Type(models.Model):
-    pass
+    type_name=models.CharField(max_length=20,verbose_name="类型")
+    #设置返回值
+    def __str__(self):
+        return self.type_name
+
+    class Mate:
+        verbose_name_plural = "产品类型"
+
 class Product(models.Model):
-    pass
+    name=models.CharField("商品名字",max_length=50)
+    weight=models.CharField("商品宽度",max_length=20)
+    height=models.CharField("商品高度",max_length=20)
+    type=models.ForeignKey(Type,on_delete=models.CASCADE,verbose_name="商品类型")
+
+    #重写__str__设置返回值
+    def __str__(self):
+        return self.name
+
+    #定义Meta类来设置模型类的中文名字
+    class Meta:
+        verbose_name_plural="产品信息"
+
+    #自定义函数，设置字体颜色
+    #导入from django.utils.html import format_html
+    def colored_type(self):
+        if "华为" in self.type.type_name:
+            color_code="red"
+        elif "小米" in self.type.type_name:
+            color_code="green"
+        else:
+            color_code='yellow'
+        return format_html(
+            '<span style="color:{};"> {} </span>',color_code,self.type
+        )
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #多对多：同理->他会自动生成第三张关联的表
