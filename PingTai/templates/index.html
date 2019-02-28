@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>接口测试平台</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+</head>
+<body style="background-image: url({% static 'img/background.jpg' %})">
+<div class="container">
+        <div class="row" style="margin-top: 100px">
+            <div class="col-lg-7" style="font-size: 24px;color:whitesmoke;margin-top: 30px">
+
+                <h1 style="margin-left: 100px">接口测试平台</h1>
+                {% block a %}
+
+                {% endblock %}
+                <div style="margin-left: 66px;margin-top: 30px">
+                    <a href="/index/login/" class="btn btn-success btn-lg">登陆页面</a>
+                    <a href="/index/register" style="margin-left: 36px" class="btn btn-warning btn-lg">注册页面</a>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                {% block b %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{#<!DOCTYPE html>#}
+{#{% load static %}#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>接口测试平台</title>#}
+{#    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">#}
+{#    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>#}
+{#    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>#}
+{#</head>#}
+{#<body>#}
+{##}
+{#    <div class="container1">#}
+{#        <div class="head">#}
+{#            <h1>慧测科技<p>This is a demo</p></h1>#}
+{#        </div>#}
+{#        <div class="a col-lg-4 col-md-4">#}
+{#            <h2>Heading1</h2>#}
+{#            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui</p>#}
+{#        </div>#}
+{#        <div class="a col-lg-4 col-md-4">#}
+{#            <h2>Heading2</h2>#}
+{#            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui</p>#}
+{#        </div>#}
+{#        <div class="a col-lg-4 col-md-4">#}
+{#            <h2>Heading3</h2>#}
+{#            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui</p>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#</body>#}
+{#</html>#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#引入静态文件#}
+{#<img src="http://127.0.0.1:8000/static/img/loading.gif">#}
+{#<img src="/static/img/loading.gif">#}
+{#<img src="{% static 'img/loading.gif' %}">#}
+{##}
+{#    <table>#}
+{##}
+{#        <tr>#}
+{#            <th>ID</th>#}
+{#            <th>姓名</th>#}
+{#            <th>年龄</th>#}
+{##}
+{#            <td>#}
+{#                id<br>#}
+{#                {% for i in students %}#}
+{#                    {{ i.id }}<br>#}
+{#                {% endfor %}#}
+{#            </td>#}
+{##}
+{#            <td>#}
+{#                name<br>#}
+{#                {% for i in students %}#}
+{#                    {{ i.name }}<br>#}
+{#                {% endfor %}#}
+{#            </td>#}
+{##}
+{#            <td>#}
+{#                age<br>#}
+{#                {% for i in students %}#}
+{#                    {{ i.age }}<br>#}
+{#                {% endfor %}#}
+{#            </td>#}
+{#        </tr>#}
+{#        <tr>#}
+{#            {% for i in students %}#}
+{#            <td>{{ i.id }}</td>#}
+{#            <td>{{ i.name }}</td>#}
+{#            <td>{{ i.age }}</td>#}
+{#            {% endfor %}#}
+{#        </tr>#}
+{##}
+{#    </table>#}
+{##}
+{#<form action="base.html" method="post">#}
+{#    <input type="text"><br>#}
+{#    <input type="password"><br>#}
+{#    <input type="email"><br>#}
+{#    <input type="submit" value="提交">#}
+{#</form>#}
+{##}
+{##}
+{##}
+{##}
+{#继承要写在第一行#}
+{#{% extends 'base.html' %}#}
+{#{% block test%}#}
+{#    <form >#}
+{#       <p>用户名：<input type="text"></p>#}
+{#        <p>密码：<input type="password"></p>#}
+{#    </form>#}
+{#{% endblock %}#}
+{##}
+{##}
