@@ -1,0 +1,181 @@
+{% load bootstrap4 %}
+{% bootstrap_javascript %}
+{% bootstrap_css %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>产品自动化测试平台</title>
+
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css" />
+    <script type="text/javascript" src="/admin/jsi18n/"></script>
+    <script type="text/javascript" src="/static/admin/js/vendor/jquery/jquery.js"></script>
+    <script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
+    <script type="text/javascript" src="/static/admin/js/acore.js"></script>
+    <script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+    <script type="text/javascript" src="/static/admin/js/actions.js"></script>
+    <script type="text/javascript" src="/static/admin/js/urlify.js"></script>
+    <script type="text/javascript" src="/static/admin/js/prepopulate.js"></script>
+    <script type="text/javascript" src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+    <meta name="viewport" charset="UTF-8" content="user-scalable=no,width=device-width,initial-scale=1.0,maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css" />
+    <meta name="robots" content="NONE,NOARCHIVE" />
+</head>
+<body role="document">
+{#导航栏#}
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark navbar-fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">&nbsp;</a>
+        <ul class="nav justify-content-center"></ul>
+        <ul class="nav justify-content-end">
+            <li class="navbar-link"><a style="color: white" href="#">{{ user }}</a></li>
+            <li class="navbar-link"><a style="color: white" href="/logout">退出</a></li>
+        </ul>
+    </div>
+</nav>
+
+{#bug列表#}
+<div class="row" style="padding-top: 70px">
+
+{#    增加app流程测试用例#}
+    <div style="float: right;width: 50%">
+        <select name="Bug" id="id_Bug">
+            <option value="" selected>
+                    app测试用例
+            </option>
+        </select>
+    </div>
+
+    <a class="related-widget-wrapper-link change-related" id="change_id_Bug" data-href-template="/admin/bug/bug/__fk__/change/?
+    _to_field=id&amp;_popup=1" title="更改选中的测试地址">
+        <img src="/static/admin/img/icon-changelink.svg" alt="修改" />
+    </a>
+
+    <a class="related-widget-wrapper-link add-another" id="add_id_Bug" href="admin/bug/bug/add/?_to_field=id&amp;__popup=1"
+    title="增加一个测试用例">
+        <img src="/static/admin/img/icon-changelink.svg" alt="增加" />
+    </a>
+
+
+  <div class="page-header" style="padding-top: 10px">
+           <form class="navbar-form" method="get" action="/bugsearch/">
+                <input type="search" name="bugname" placeholder="名称" required>
+                <button type="submit">搜索</button>
+
+            </form>
+        </div>
+
+    <div class="col-md-11">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>产品</th>
+                <th>bug名称</th>
+                <th>bug详情</th>
+                <th>解决状态</th>
+                <th>严重程度</th>
+                <th>创建人</th>
+                <th>分配给</th>
+                <th>创建时间</th>
+                <th>编辑</th>
+                <th>删除</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for bug in bugs %}
+                <tr>
+                <td>{{ bug.id }}</td>
+                <td>{{ bug.Product.productname }}</td>
+                <td>{{ bug.bugname }}</td>
+                <td title="{{ bug.bugdetail }}">{{ bug.bugdetail }}</td>
+                <td>{{ bug.bugstatus }}</td>
+                <td>{{ bug.buglevel }}</td>
+                <td>{{ bug.bugcreater }}</td>
+                <td>{{ bug.bugassign }}</td>
+                <td>{{ bug.create_time }}</td>
+                <td>
+                    <a style="color: blue" class="related-widget-wrapper-link add-related" id="add_id_Bug"
+                        href="../admin/bug/bug/{{ bug.id }}/change/?_to_field=id&_popup=1">
+                        <img src="/static/admin/img/icon-changelink.svg">
+                    </a>
+                </td>
+
+                <td>
+                    <a style="color: blue" class="related-widget-wrapper-link add-related" id="add_id_Bug"
+                        href="../admin/bug/bug/{{ bug.id }}/delete/?_to_field=id&_popup=1">
+                        <img src="/static/admin/img/icon-changelink.svg">
+                    </a>
+                </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{#翻页功能#}
+<span style="position: absolute;right: 100px;bottom: 30px"></span>
+
+<div style="position: absolute;right: 100px;bottom:30px">
+    <tr><th>共</th><td>{{ bugcounts }}条记录</td></tr>
+</div>
+
+<div class="container">
+    <ul class="pagination" id="pager">
+
+        {% if bugs.has_previous %}
+            <li class="previous">
+                <a href="/bug_manage/?page={{ bugs.previous_page_number }}">
+                     上一页
+                </a>
+            </li>
+
+            {% else %}
+            <li class="previous disabled">
+                <a href="#">
+                    上一页
+                </a>
+            </li>
+        {% endif %}
+
+        {% for num in bugs.paginator.page_range %}
+            {% if num == currentPage %}
+            <li class="item active">
+                <a href="/bug_manage/?page={{ num }}">
+                    {{ num }}
+                </a>
+            </li>
+
+                {% else %}
+                <li class="item">
+                    <a href="/bug_manage/?page={{ num }}">
+                        {{ num }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if bugs.has_next %}
+            <li class="next">
+                <a href="/bug_manage/?page={{ bugs.next_page_number }}">
+                    下一页
+                </a>
+            </li>
+
+            {% else %}
+            <li class="next disabled">
+                <a href="#">
+                    下一页
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+
+</div>
+
+</body>
+</html>
