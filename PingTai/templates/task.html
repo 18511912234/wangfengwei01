@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>测试任务管理页面<button style="margin-left: 30px" class="btn btn-primary" data-toggle="modal" data-target="#newModal"><i style="margin-right: 5px" class="fa fa-grav"></i>新建测试任务</button></h3>
+    <form class="form-inline" style="margin-top: 40px">
+      <div class="form-group">
+        <label class="sr-only" for="exampleInputEmail3">任务名称</label>
+        <input type="text" class="form-control" id="task_name" placeholder="任务名称">
+      </div>
+      <a id="search" style="margin-left: 18px" class="btn btn-default"><i style="margin-right: 5px" class="fa fa-search"></i>查询</a>
+    </form>
+
+    <table style="margin-top: 20px" class="table table-striped">
+      <thead style="font-weight: bold;font-size: 18px">
+            <td>任务编号</td>
+            <td>任务名称</td>
+            <td>任务操作</td>
+      </thead>
+      <tbody>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.id }}</td>
+                <td>{{ task.name }}</td>
+                <td>
+                    <button class="btn btn-warning" value="{{ task.id }}" data-toggle="modal" data-target="#editModal"><i style="margin-right: 5px" class="fa fa-pencil-square-o"></i>编辑</button>
+                    <button class="run btn btn-success" value="{{ task.id }}"><i style="margin-right: 5px" class="fa fa-play-circle-o"></i>运行</button>
+                    <button value="{{ task.id }}" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger delete-task"><i style="margin-right: 5px" class="fa fa-trash-o"></i>删除</button>
+                </td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="loading row" style="display:none;margin-top: 20px;margin-left: 10px">
+        <h3 class="text-danger"><i class="fa fa-refresh fa-spin fa-2x fa-fw" style="margin-right: 10px"></i>当前任务正在运行，结束后报告回显到下方</h3>
+    </div>
+
+    <div class="report" style="display:none;margin-top: 20px;margin-left: 10px">
+        <iframe style="height: 1200px;width: 1400px" id="report_frame" src="#"></iframe>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="newModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">新增任务</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="exampleInputEmail1">任务名称</label>
+                <input type="text" class="form-control" id="new_name" placeholder="必填项">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">任务描述</label>
+                <textarea style="height: 80px" type="password" class="form-control" id="task_desc" ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">关联用例</label>
+                <div class="row">
+                    {% if cases|length > 0 %}
+                        {% for case in cases %}
+                        <div class="col-lg-4 col-md-4">
+                            <label class="checkbox-inline"><input type="checkbox" name="case" value="{{ case.id }}">{{ case.name }}</label>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-lg-8 col-md-8">
+                            <h4 class="text-danger">请先添加测试用例</h4>
+                        </div>
+                    {% endif %}
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            <button id="create_task" type="button" class="btn btn-primary">确认</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="deleteModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">删除确认</h4>
+          </div>
+          <div class="modal-body">
+            <p>是否确认删除该任务？</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" value="0" id="delete_confirm">确认</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="editModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">编辑任务</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group" style="display: none">
+                <input type="text" class="form-control" id="task_id">
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">任务名称</label>
+                <input type="text" class="form-control" id="old_name" placeholder="必填项">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">任务描述</label>
+                <textarea style="height: 80px"  class="form-control" id="old_desc" ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            <button id="create_task" type="button" class="btn btn-primary">确认</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+    <script>
+        $("div.loading").hide();
+        $("div.report").hide();
+        $("#search").click(function () {
+            $("tbody").empty();
+            var name = $("#task_name").val();
+            $.post('/api/search_task/', {name: name}, function (data) {
+                if(data.tasks.length>0){
+                    for(var i=0;i<data.tasks.length;i++){
+                        var id = data.tasks[i].id;
+                        var name = data.tasks[i].name;
+                        var text = "<tr><td>"+id+"</td><td>"+name+"</td><td> <button class=\"btn btn-warning\"><i style=\"margin-right: 5px\" class=\"fa fa-pencil-square-o\"></i>编辑</button> <button class=\"run btn btn-success\"><i style=\"margin-right: 5px\" class=\"fa fa-play-circle-o\"></i>运行</button> <button class=\"btn btn-danger delete-task\"><i style=\"margin-right: 5px\" class=\"fa fa-trash-o\"></i>删除</button></td></tr>"
+                        $("tbody").append(text);
+                    }
+                }else {
+                    $("tbody").append('<tr><td>未找到匹配的测试任务</td></tr>');
+                }
+
+            });
+        });
+        
+        $("#create_task").click(function () {
+            var name = $("#new_name").val();
+            var vals = '';
+            var arr = new Array();
+            $("input[name='case']:checked").each(function(i){
+                arr[i] = $(this).val();
+            });
+            vals = arr.join(",");
+            if(name != ''){
+                var desc =  $("#task_desc").val();
+                if(vals != ''){
+                    $.post('/api/new_task/' ,{name:name, desc:desc, cases:vals}, function (data) {
+                            if(data.flag == 0){
+                                window.location.reload();
+                            }else if(data.flag == 1){
+                                alert('任务名称已存在！');
+                            }else if(data.flag == 2){
+                                alert('任务名称不能为空！');
+                            }
+                    });
+                 }else {
+                    alert('请至少关联一个测试用例！')
+                }
+            }else{
+                alert('任务名称不能为空！')
+            }
+        });
+        
+        $(".delete-task").click(function () {
+            var id = $(this).attr('value');
+            $("#delete_confirm").attr('value', id);
+{#            $.post('/api/delete_task/', {id:id}, function (data) {#}
+{#                if(data.flag == 1){#}
+{#                    alert('删除任务成功！');#}
+{#                }else if(data.flag == 0){#}
+{#                     alert('待删除的任务不存在！')#}
+{#                }#}
+{#                window.location.reload();#}
+{#            });#}
+        });
+
+        $("#delete_confirm").click(function () {
+            var id = $(this).attr('value');
+            $.post('/api/delete_task/', {id:id}, function (data) {
+                if(data.flag == 1){
+                    alert('删除任务成功！');
+                }else if(data.flag == 0){
+                     alert('待删除的任务不存在！')
+                }
+                window.location.reload();
+            });
+        });
+
+        $('#editModal').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget);
+          var id = button.attr('value');
+          $.post('/api/get_task/', {id:id}, function (data) {
+              if(data.flag == 1){
+                  $("#old_name").val(data.name);
+                  $("#old_desc").val(data.desc);
+                  $("#task_id").val(data.id);
+              }else if(data.flag == 0){
+                  alert('该任务已被删除!')
+              }
+          });
+        });
+        
+        $("button.run").click(function () {
+            $("div.report").hide();
+            $("div.loading").show();
+            var tid = $(this).attr('value');
+            $.post('/api/run/', {tid: tid}, function (data) {
+                $("div.loading").hide();
+                if(data.flag == 0){
+                    $("#report_frame").attr("src", data.report);
+                    $("div.report").show();
+                }
+                else{
+                    alert('任务执行失败，请具体查看测试日志!')
+                }
+            });
+        });
+        
+    </script>
+{% endblock %}

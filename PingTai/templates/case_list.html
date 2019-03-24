@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>测试用例管理页面<a style="margin-left: 30px" class="btn btn-primary" href="/index/case_new/"><i style="margin-right: 5px" class="fa fa-grav"></i>新建测试用例</a></h3>
+    <form class="form-inline" style="margin-top: 40px">
+      <div class="form-group">
+        <label class="sr-only" for="exampleInputEmail3">用例名称</label>
+        <input type="text" class="form-control" id="task_name" placeholder="用例名称">
+      </div>
+      <a id="search" style="margin-left: 18px" class="btn btn-default"><i style="margin-right: 5px" class="fa fa-search"></i>查询</a>
+    </form>
+
+    <table style="margin-top: 20px" class="table table-striped">
+      <thead style="font-weight: bold;font-size: 18px">
+            <td>用例编号</td>
+            <td>用例名称</td>
+            <td>用例操作</td>
+      </thead>
+      <tbody>
+        {% if cases|length > 0 %}
+        {% for case in cases %}
+            <tr>
+                <td>{{ case.id }}</td>
+                <td>{{ case.name }}</td>
+                <td>
+                    <button class="btn btn-warning" value="{{ task.id }}" data-toggle="modal" data-target="#editModal"><i style="margin-right: 5px" class="fa fa-pencil-square-o"></i>编辑</button>
+                    <button value="{{ task.id }}" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger delete-task"><i style="margin-right: 5px" class="fa fa-trash-o"></i>删除</button>
+                </td>
+            </tr>
+        {% endfor %}
+         {% else %}
+            <tr><td class="text-danger">请先添加测试用例!!!</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+
+{% endblock %}

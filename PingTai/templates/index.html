@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>接口测试平台</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+</head>
+<body style="background-image: url({% static 'img/background.jpg' %})">
+
+    <div class="container">
+        <div class="row" style="margin-top: 100px">
+            <div class="col-lg-7" style="font-size: 24px;color:whitesmoke;margin-top: 30px">
+                <h1 style="margin-left: 100px">接口测试平台</h1>
+                {% block info %}
+                {% endblock %}
+                <div style="margin-left: 80px;margin-top: 30px">
+                    <a href="/index/register/" style="margin-right: 30px" class="btn btn-warning btn-lg">注册页面</a>
+                    <a href="/index/login/" class="btn btn-success btn-lg">登录页面</a>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>新增测试用例</h3>
+    <div class="row" style="margin-top: 50px;margin-left: 50px">
+        <div class="col-md-7 col-lg-7">
+        <form action="/api/case_new/" method="post">
+              <div class="form-group">
+                <label for="exampleInputEmail1">用例名称</label>
+                <input type="text" class="form-control" name="name" required placeholder="不超过10个字符">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">描述</label>
+                <textarea class="form-control" name="desc" rows="2" placeholder="不超过50个字符"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">方法类型</label>
+                 <select class="form-control" name="method">
+                      <option value="get">GET</option>
+                      <option value="post">POST</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">URL</label>
+                <input required type="url" class="form-control" name="url">
+              </div>
+              <div class="form-group" id="headers">
+                <label for="exampleInputEmail1">头信息</label>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 ">
+                        <div class="input-group">
+                            <span class="input-group-btn"><a class="btn btn-success add_header">+</a></span>
+                            <input type="text" class="form-control" name="head_key" placeholder="Key">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <input type="text" class="form-control" name="head_value" placeholder="Value">
+                    </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">请求体</label>
+                <br>
+                <label class="radio-inline">
+                  <input checked type="radio" name="body_type" id="inlineRadio1" value="none"> 无
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="body_type" id="inlineRadio1" value="url-encode"> url-encode
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="body_type" id="inlineRadio2" value="json"> json
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="body_type" id="inlineRadio3" value="xml"> xml
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="body_type" id="inlineRadio3" value="form"> form
+                </label>
+                <textarea class="form-control" rows="3" name="body_value"></textarea>
+              </div>
+              <div class="form-group" id="checks">
+                <label for="exampleInputEmail1">检查点</label>
+                    <div class="row check-row">
+                        <div class="col-lg-6 col-md-6 ">
+                            <div class="input-group">
+                                <span class="input-group-btn"><a class="btn btn-success add_check">+</a></span>
+                                <select class="form-control" name="check_type">
+                                    <option value="0">响应状态码等于</option>
+                                    <option value="1">响应时间小于</option>
+                                    <option value="2">响应体包含</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <input required type="text" class="form-control" name="check_value" placeholder="Value">
+                        </div>
+                    </div>
+              </div>
+              <button style="margin-top: 20px;margin-bottom: 50px" type="submit" class="form-control btn btn-primary">提交</button>
+        </form>
+    </div>
+    </div>
+
+    <script>
+        $("body").on("click", "a.add_header", function () {
+            var text = '<div class="row head-row" style="margin-top: 10px"><div class="col-lg-6 col-md-6 "><div class="input-group"> ' +
+                '<span class="input-group-btn"><a class="btn btn-success add_header">+</a></span>'+
+                '<input type="text" class="form-control" name="head_key" placeholder="Key">'+
+                '</div></div><div class="col-lg-6 col-md-6"><div class="input-group">'+
+                '<input type="text" class="form-control" name="head_value" placeholder="Value">' +
+                '<span class="input-group-btn"><a class="btn btn-danger delete_header">-</a></span></div></div>';
+            $("#headers").append(text);
+        });
+
+        $("body").on("click", "a.delete_header", function () {
+            $(this).parents("div.head-row").remove();
+        });
+
+        $("body").on("click", "a.add_check", function () {
+            var text = '<div class="row check-row" style="margin-top: 10px"><div class="col-lg-6 col-md-6 "><div class="input-group">'+
+                    '<span class="input-group-btn"><a class="btn btn-success add_check">+</a></span><select class="form-control" name="check_type">'+
+                    '<option value="0">响应状态码等于</option><option value="1">响应时间小于</option><option value="2">响应体包含</option>'+
+                    '</select></div></div><div class="col-lg-6 col-md-6"><div class="input-group">'+
+                    '<input type="text" class="form-control" name="check_value" placeholder="Value">' +
+                    '<span class="input-group-btn"><a class="btn btn-danger delete_check">-</a></span></div></div>';
+            $("#checks").append(text);
+        });
+
+        $("body").on("click", "a.delete_check", function () {
+            $(this).parents("div.check-row").remove();
+        });
+    </script>
+
+{% endblock %}
